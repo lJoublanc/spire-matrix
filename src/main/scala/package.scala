@@ -1,3 +1,5 @@
-package object math 
-  extends matrix
-  with vector
+package object math extends matrix {
+  object blas
+    extends math.blasMatrix
+    with math.blasVectorSpace
+}
