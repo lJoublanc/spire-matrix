@@ -8,7 +8,8 @@ lazy val root = (project in file(".")).
       version      := "0.1.0-SNAPSHOT",
       scalacOptions ++= Seq(
         "-Yliteral-types",
-        "-Ypartial-unification"
+        "-Ypartial-unification",
+        "-language:higherKinds"
       )
     )),
     name := "BayesTrade Demo",

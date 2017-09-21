@@ -28,8 +28,10 @@ trait matrix {
 
   object ColumnVector {
     /* The default implementation is [[blasMatrix.DenseMatrix]] */
-    def apply[T : ClassTag, M <: Int : ValueOf](xs : T*)(implicit one : ValueOf[1]) : ColumnVector[T,M] = 
+    def apply[T : ClassTag, M <: Int : ValueOf](xs : T*) : ColumnVector[T,M] = {
+      implicit val one = valueOf[1]
       blas.DenseMatrix.fromArray[T,M,1](xs.toArray)
+    }
   }
 }
 
