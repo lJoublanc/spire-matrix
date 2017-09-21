@@ -26,5 +26,8 @@ lazy val root = (project in file(".")).
       import spire.std.double._
       import spire.algebra.VectorSpace
       import spire.syntax.vectorSpace._
+      import cats.syntax.show._
+      import cats.instances.double.catsStdShowForDouble
+      implicit val blasInstance : BLAS = new F2jBLAS()
     """
   )

@@ -11,6 +11,7 @@ trait blasMatrix {
     def cols : N = valueOf[N]
     protected[math] def values : Array[T]
     protected[math] def stride : M = rows
+    def apply(row : Int, col : Int) : T = values(row * stride + col)
   }
 
   object DenseMatrix extends blasVectorSpace {
