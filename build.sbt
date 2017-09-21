@@ -21,7 +21,7 @@ lazy val root = (project in file(".")).
     ),
     initialCommands := """
       import math._
-      import DenseMatrix._
+      import blas._
       import com.github.fommil.netlib._
       import spire.std.double._
       import spire.algebra.VectorSpace
