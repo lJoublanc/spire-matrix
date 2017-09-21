@@ -33,14 +33,14 @@ trait blasVectorSpace {
     type Matrix = DenseMatrix[T,M,N]
     lazy val size = valueOf[M]*valueOf[N]
 
-    /** BLAS subroutines.
-      * Implementing classes need to define these to resolve to the correct data type.
-      */
+    /* BLAS subroutines.
+     * Implementing classes need to define these to resolve to the correct data type.
+     */
     protected val xscal : (Int, T, Array[T], Int) => Unit
     protected val xaxpy : (Int, T, Array[T], Int, Array[T], Int) => Unit
 
-    /** Reify Level 1 BLAS subroutine.
-      * This trait is used to build up a description of the expression, to allow optimisation where possible.
+    /** Reification of Level 1 BLAS subroutine.
+      * This trait is used to build up a description of the expression, to allow optimisation of compound expressions.
       */
     protected sealed trait L1BLAS extends DenseMatrix[T,M,N] { self : L1BLAS =>
       val x : Matrix 
@@ -86,8 +86,7 @@ trait blasVectorSpace {
 
   import spire.std.double._
   import blas.DenseMatrix
-  implicit def denseMatrixOfDoubleVectorSpace[M <: Int : ValueOf, N <: Int : ValueOf]
-      (implicit blas : BLAS, A : Applicative[({ type m[x] = DenseMatrix[x,M,N] })#m]) :
+  implicit def denseMatrixOfDoubleVectorSpace[M <: Int : ValueOf, N <: Int : ValueOf](implicit blas : BLAS) :
       VectorSpaceMatrixInstance[Double,M,N] = 
     new VectorSpaceMatrixInstance[Double,M,N] {
     import blas._
