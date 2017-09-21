@@ -14,18 +14,20 @@ trait blasVectorSpace {
     * The type T must belong to the set of Reals, Doubles or Complex.
     * This implementation allocates an intermediate object on each operation, and only evaluates the
     * results once `Matrix.values` is materialized.
-    * @tparm The element type of the matrix, which must also be the same as the type of the field.
-    *        This is a limitation of the library; but remember you can always implicitly upcast an e.g. `Int` to a `Double`.
+    * @tparm The element type of the matrix
     * @tparm M Number of rows.
     * @tparm N Number of columns.
     */
   trait BLASMatrixOps[T,M <: Int, N <: Int] {
     /** The BLAS library implementation used to perform optimized calculations where possible  */
     def blas : BLAS
-    val xcopy : (Int, Array[T], Int, Array[T], Int) => Unit
+    protected val xcopy : (Int, Array[T], Int, Array[T], Int) => Unit
   }
 
-  /** A Type Class for Vector Spaces of `m` x `n` matrices, using BLAS for all operations.  */
+  /** A Type Class for Vector Spaces of `m` x `n` matrices, using BLAS for all operations.
+    * @tparm T Element type of the matrix, which must also be the same as the type of the field.
+    *          This is a limitation of the library; but remember you can always implicitly upcast an e.g. `Int` to a `Double`.
+    */
   abstract class VectorSpaceMatrixInstance[T : Field : ClassTag, M <: Int : ValueOf, N <: Int : ValueOf]
       (implicit override val blas : BLAS) extends VectorSpace[DenseMatrix[T,M,N],T] with BLASMatrixOps[T,M,N] {
     type Matrix = DenseMatrix[T,M,N]
@@ -34,8 +36,8 @@ trait blasVectorSpace {
     /** BLAS subroutines.
       * Implementing classes need to define these to resolve to the correct data type.
       */
-    val xscal : (Int, T, Array[T], Int) => Unit
-    val xaxpy : (Int, T, Array[T], Int, Array[T], Int) => Unit
+    protected val xscal : (Int, T, Array[T], Int) => Unit
+    protected val xaxpy : (Int, T, Array[T], Int, Array[T], Int) => Unit
 
     /** Reify Level 1 BLAS subroutine.
       * This trait is used to build up a description of the expression, to allow optimisation where possible.
@@ -90,8 +92,8 @@ trait blasVectorSpace {
     new VectorSpaceMatrixInstance[Double,M,N] {
     import blas._
 
-    val xcopy = dcopy
-    val xscal = dscal
-    val xaxpy = daxpy
+    lazy val xcopy = dcopy
+    lazy val xscal = dscal
+    lazy val xaxpy = daxpy
   }
 }
