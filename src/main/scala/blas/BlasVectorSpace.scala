@@ -2,7 +2,6 @@ package blas
 
 import spire.algebra.{VectorSpace,Field}
 import com.github.fommil.netlib.BLAS
-import cats.Applicative
 
 import scala.reflect.ClassTag
 
