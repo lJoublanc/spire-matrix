@@ -15,6 +15,16 @@ trait matrix {
     def cols : N
   }
 
+  /** A matrix with known dimensions, supporting safe indexing */
+  trait FiniteMatrix[T,M <: Int, N <: Int] extends Matrix[T,M,N] with Function2[Int,Int,T] {
+    def rows : M
+    def cols : N
+    /** The number of elements in the matrix, m x n */
+    def size : Int /* M x N */ = rows * cols
+    /** The element at position i,j. */
+    def apply(row : Int, col : Int) : T
+  }
+
   object Matrix {
     /* The default implementation is [[blasMatrix.DenseMatrix]] */
     def apply[T : ClassTag, M <: Int : ValueOf, N <: Int : ValueOf](xs : T*) : blas.DenseMatrix[T,M,N] =

@@ -6,7 +6,7 @@ trait blasMatrix {
   /** 
     * A dense matrix, backed by a column-major array with BLAS layout to support fast calculations with that library.
     */
-  abstract class DenseMatrix[T : ClassTag, M <: Int : ValueOf, N <: Int : ValueOf] extends Matrix[T,M,N] {
+  abstract class DenseMatrix[T : ClassTag, M <: Int : ValueOf, N <: Int : ValueOf] extends FiniteMatrix[T,M,N] {
     def rows : M = valueOf[M]
     def cols : N = valueOf[N]
     protected[math] def values : Array[T]

@@ -74,10 +74,10 @@ trait blasVectorSpace {
 
     /** Make a copy of the output argument so that `f` becomes immutable.
       * Many BLAS subroutines accumulate the result to one of the input parameters. This convenience function
-      * can be used to create a copy of that parameter and passing it to the function, so it is not over-written.
+      * can be used to create a copy of that parameter and pass it to the function, so it is not overwritten in-lace.
       */
     private def withCopyOf(x : Matrix)(f : Array[T] => Unit) : Array[T] = {
-      val outBuff : Array[T] = Array ofDim x.values.length
+      val outBuff : Array[T] = Array ofDim x.size
       xcopy(x.values.length, x.values, x.stride, outBuff, x.stride)
       f(outBuff)
       outBuff
