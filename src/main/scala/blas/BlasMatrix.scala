@@ -13,7 +13,7 @@ trait blasMatrix {
     def cols : N = valueOf[N]
     protected[blas] def values : Array[T]
     protected[blas] def stride : M = rows
-    def apply(row : Int, col : Int) : T = values(row * stride + col)
+    def apply(row : Int, col : Int) : T = values(row + col * stride)
   }
 
   object Matrix {
