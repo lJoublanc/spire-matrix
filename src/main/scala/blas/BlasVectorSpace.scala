@@ -19,7 +19,7 @@ trait blasVectorSpace {
     def negate(x: Matrix): Matrix = SCAL(scalar.negate(scalar.one), x)
 
     /** Returns an m x n matrix with elements set to zero.*/
-    lazy val zero: Matrix = DenseMatrix.fromArray[T,M,N](Array.fill(size)(scalar.zero))
+    lazy val zero: Matrix = Matrix.fromDenseArray[T,M,N](Array.fill(size)(scalar.zero))
 
     /** Matrix addition */  
     def plus(x: Matrix,y: Matrix): Matrix = (x,y) match {

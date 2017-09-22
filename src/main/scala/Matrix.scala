@@ -25,22 +25,12 @@ trait matrix {
     def apply(row : Int, col : Int) : T
   }
 
-  object Matrix {
-    /* The default implementation is [[blasMatrix.DenseMatrix]] */
-    def apply[T : ClassTag, M <: Int : ValueOf, N <: Int : ValueOf](xs : T*) : blas.DenseMatrix[T,M,N] =
-      blas.DenseMatrix.fromArray(xs.toArray)
-  }
-
   /** A `ColumnVector` is just a type alias for a `M` x 1 matrix. */
-  type ColumnVector[T,M <: Int] = blas.DenseMatrix[T,M,1]
+  type ColumnVector[T,M <: Int] = FiniteMatrix[T,M,1]
 
-  object ColumnVector {
-    /* The default implementation is [[blasMatrix.DenseMatrix]] */
-    def apply[T : ClassTag, M <: Int : ValueOf](xs : T*) : ColumnVector[T,M] = {
-      implicit val one = valueOf[1]
-      blas.DenseMatrix.fromArray[T,M,1](xs.toArray)
-    }
-  }
+  /** A `ColumnVector` is just a type alias for a `M` x `M` matrix. */
+  type SquareMatrix[T, M <: Int] = FiniteMatrix[T,M,M]
+
 }
 
 

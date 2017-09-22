@@ -1,12 +1,11 @@
 package blas
 
-import math.FiniteMatrix
-
 import scala.reflect.ClassTag
 
-trait blasMatrix {
+trait blasMatrix extends math.matrix {
+
   /** 
-    * A dense matrix, backed by a column-major array with BLAS layout to support fast calculations with that library.
+    * A dense matrix, backed by a column-major array with BLAS layout to support fast vectorised calculation.
     */
   abstract class DenseMatrix[T : ClassTag, M <: Int : ValueOf, N <: Int : ValueOf] extends FiniteMatrix[T,M,N] {
     def rows : M = valueOf[M]
@@ -16,17 +15,28 @@ trait blasMatrix {
     def apply(row : Int, col : Int) : T = values(row * stride + col)
   }
 
-  object DenseMatrix extends blasVectorSpace {
-   /** 
-     * Creates a matrix of known dimensions, backed by an existing array. 
-     */
-    def fromArray[T : ClassTag, M <: Int : ValueOf, N <: Int : ValueOf](array : Array[T]) : DenseMatrix[T,M,N] =
+  object Matrix {
+    /** Creates a matrix of known dimensions, backed by an existing column-major array.
+      */
+    def fromDenseArray[T : ClassTag, M <: Int : ValueOf, N <: Int : ValueOf](array : Array[T]) : DenseMatrix[T,M,N] =
       new DenseMatrix[T,M,N] {
         val values = {
           assert(rows*cols == array.length)
           array
         }
       }
+
+   /** Convenience constructor */
+    def apply[T : ClassTag, M <: Int : ValueOf, N <: Int : ValueOf](xs : T*) : FiniteMatrix[T,M,N] =
+      fromDenseArray(xs.toArray)
+  }
+
+  object ColumnVector {
+    /* Convenience constructor */
+    def apply[T : ClassTag, M <: Int : ValueOf](xs : T*) : ColumnVector[T,M] = {
+      implicit val one = valueOf[1]
+      Matrix.fromDenseArray[T,M,1](xs.toArray)
+    }
   }
 
   /** As per BLAS spec for packing efficiently */
