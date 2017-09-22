@@ -41,9 +41,12 @@ protected[blas] trait blasOps {
     case class SCAL(alpha : T, x : Matrix) extends L1Matrix
     case class AXPY(alpha : T, x : Matrix, y : Matrix) extends L1Matrix
 
-    /** Make a copy of the output argument so that `f` becomes immutable.
-      * Many BLAS subroutines accumulate the result to one of the input parameters. This convenience function
-      * can be used to create a copy of that parameter and pass it to the function, so it is not overwritten in-lace.
+    /** Make a copy of the output argument so that `f` becomes referentially transparent.
+      * Many BLAS subroutines accumulate the result into one of the input parameters. This convenience function
+      * can be used to create a copy of that parameter and pass it to the function, so it is not overwritten in-place.
+      * @parm x the mutable 'output' parameter, a copy of which will be passed to f, to avoid mutation.
+      * @parm f the function literal [[[output => f(output)]]]
+      * @return the value of the output parameter.
       */
     protected[blasOps] def withCopyOf(x : Matrix)(f : Array[T] => Unit) : Array[T] = {
       val outBuff : Array[T] = Array ofDim x.size
