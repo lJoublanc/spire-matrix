@@ -1,4 +1,4 @@
-package math
+package math 
 
 import cats.Show
 import cats.syntax.show._

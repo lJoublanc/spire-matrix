@@ -1,4 +1,4 @@
-package math
+package math 
 
 import scala.reflect.ClassTag
 
@@ -30,8 +30,6 @@ trait matrix {
     def apply[T : ClassTag, M <: Int : ValueOf, N <: Int : ValueOf](xs : T*) : blas.DenseMatrix[T,M,N] =
       blas.DenseMatrix.fromArray(xs.toArray)
   }
-
-  // trait MatrixInvariantOps[M <: Matrix[_,_,_]] { def copy : M ; def view : M; def uninitialized : M}
 
   /** A `ColumnVector` is just a type alias for a `M` x 1 matrix. */
   type ColumnVector[T,M <: Int] = blas.DenseMatrix[T,M,1]

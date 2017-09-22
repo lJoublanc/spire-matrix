@@ -1,4 +1,6 @@
-package math
+package blas
+
+import math.FiniteMatrix
 
 import scala.reflect.ClassTag
 
@@ -9,8 +11,8 @@ trait blasMatrix {
   abstract class DenseMatrix[T : ClassTag, M <: Int : ValueOf, N <: Int : ValueOf] extends FiniteMatrix[T,M,N] {
     def rows : M = valueOf[M]
     def cols : N = valueOf[N]
-    protected[math] def values : Array[T]
-    protected[math] def stride : M = rows
+    protected[blas] def values : Array[T]
+    protected[blas] def stride : M = rows
     def apply(row : Int, col : Int) : T = values(row * stride + col)
   }
 
