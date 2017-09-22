@@ -1,7 +1,7 @@
 package math 
 
 import java.nio.charset.Charset
-import java.nio.charset.StandardCharsets.UTF_16
+import java.nio.charset.StandardCharsets.{UTF_16,UTF_8}
 
 trait showMatrix {
   /** Modeled after cats.show. It should be possible to directly replace it. */
@@ -12,9 +12,13 @@ trait showMatrix {
   /** Given a formatting string (without the `f` interpolator), generate a `Show` */
   protected[showMatrix] def from[T](f: T => String) = new Show[T]{ override def show(t : T) : String = f(t) }
 
+  /** Override this e.g. to change display precision of matrix elements */
   implicit val doubleShow : Show[Double] = from[Double]( d => f"$d%.2f")
+  
+  /** Override this e.g. to change display precision of matrix elements */
   implicit val realShow : Show[Float] = from[Float]( d => f"$d%.2f")
 
+  /** Display on a console. Supports matrices of dimensions up to 80x80 and supports unicode */
   implicit def consoleShowFiniteMatrix[T : Show, M <: Int : ValueOf, N <: Int : ValueOf]
       (implicit charset : Charset = Charset.defaultCharset()) =
   new Show[FiniteMatrix[T,M,N]] {
@@ -33,7 +37,7 @@ trait showMatrix {
         val rows : Seq[Seq[String]] = Seq.tabulate(valueOf[M],valueOf[N])((i,j) => showT.show(x(i,j)))
         val maxWidth = rows.map(_.length).max
         lazy val blankRow = Seq.fill(maxWidth + rows.length - 1)(' ').toString
-        if (charset == UTF_16) 
+        if (Set(UTF_8,UTF_16) contains charset) 
            s"┌ $blankRow ┐" +: rows.map("│" ++ rowToStr(_) ++ "│" ) :+ s"└ $blankRow ┘"
         else 
            rows.map("|" ++ rowToStr(_) ++ "|")
