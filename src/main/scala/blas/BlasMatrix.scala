@@ -12,13 +12,12 @@ trait blasMatrix {
     def rows : M = valueOf[M]
     def cols : N = valueOf[N]
     protected[blas] def values : Array[T]
-    protected[blas] def stride : M = rows
+    protected[blas] def stride : N = cols
     def apply(row : Int, col : Int) : T = values(row + col * stride)
   }
 
   object Matrix {
-    /** Creates a matrix of known dimensions, backed by an existing column-major array.
-      */
+    /** Creates a matrix of known dimensions, backed by an existing column-major array.  */
     def fromDenseArray[T : ClassTag, M <: Int : ValueOf, N <: Int : ValueOf](array : Array[T]) : DenseMatrix[T,M,N] =
       new DenseMatrix[T,M,N] {
         val values = {
@@ -28,7 +27,7 @@ trait blasMatrix {
       }
 
    /** Convenience constructor */
-    def apply[T : ClassTag, M <: Int : ValueOf, N <: Int : ValueOf](xs : T*) : FiniteMatrix[T,M,N] =
+    def apply[T : ClassTag, M <: Int : ValueOf, N <: Int : ValueOf](xs : T*) : DenseMatrix[T,M,N] =
       fromDenseArray(xs.toArray)
   }
 
