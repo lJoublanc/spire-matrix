@@ -19,13 +19,11 @@ lazy val root = (project in file(".")).
       "com.github.fommil.netlib" % "all" % "1.1.2" // "core" will not pull any blas implemenations.
     ),
     initialCommands := """
-      import math._
+      import blas._t 
       import com.github.fommil.netlib._
       import spire.std.double._
       import spire.algebra.VectorSpace
       import spire.syntax.vectorSpace._
-      import cats.syntax.show._
-      import cats.instances.double.catsStdShowForDouble
       implicit val blasInstance : BLAS = new F2jBLAS()
     """
   )

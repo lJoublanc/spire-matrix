@@ -1,9 +1,10 @@
 package blas
 
+import math.{FiniteMatrix,ColumnVector}
+
 import scala.reflect.ClassTag
 
-trait blasMatrix extends math.matrix {
-
+trait blasMatrix {
   /** 
     * A dense matrix, backed by a column-major array with BLAS layout to support fast vectorised calculation.
     */

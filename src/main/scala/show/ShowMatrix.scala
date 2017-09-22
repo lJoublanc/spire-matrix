@@ -1,4 +1,6 @@
-package math 
+package math.show
+
+import math.FiniteMatrix
 
 import java.nio.charset.Charset
 import java.nio.charset.StandardCharsets.{UTF_16,UTF_8}
@@ -7,9 +9,9 @@ trait showMatrix {
   /** Modeled after cats.show. It should be possible to directly replace it. */
   trait Show[-T] extends AnyRef { def show(t : T) : String }
 
-  implicit class ShowOpsSyntax[-T](t : T)(implicit S: Show[T]) extends AnyRef { def show : String = S.show(t) }
+  implicit class ShowOpsSyntax[T](t : T)(implicit S: Show[T]) extends AnyRef { def show : String = S.show(t) }
 
-  /** Given a formatting string (without the `f` interpolator), generate a `Show` */
+  /** Given a function from T to String, generate a `Show` */
   protected[showMatrix] def from[T](f: T => String) = new Show[T]{ override def show(t : T) : String = f(t) }
 
   /** Override this e.g. to change display precision of matrix elements */
@@ -19,15 +21,15 @@ trait showMatrix {
   implicit val realShow : Show[Float] = from[Float]( d => f"$d%.2f")
 
   /** Display on a console. Supports matrices of dimensions up to 80x80 and supports unicode */
-  implicit def consoleShowFiniteMatrix[T : Show, M <: Int : ValueOf, N <: Int : ValueOf]
-      (implicit charset : Charset = Charset.defaultCharset()) =
-  new Show[FiniteMatrix[T,M,N]] {
+  implicit def consoleShowFiniteMatrix[T : Show, M <: Int : ValueOf, N <: Int : ValueOf, Mat[t,m <: Int,n <:Int] <: FiniteMatrix[t,m,n]]
+      (implicit charset : Charset = Charset.defaultCharset()) : Show[Mat[T,M,N]] =
+  new Show[Mat[T,M,N]] {
     val (maxWidth,maxHeight) = (80/6,80)
     val comma = ", "
 
     protected def rowToStr(s : Seq[String]) : String = s.mkString(comma)
 
-    def show(x : FiniteMatrix[T,M,N]) : String = {
+    def show(x : Mat[T,M,N]) : String = {
       val showT = implicitly[Show[T]]
      
       if (x.size == 0) "[ Null Matrix (m x n = 0) ]"
