@@ -14,7 +14,7 @@ protected[blas] trait blasOps {
     * @tparm M Number of rows.
     * @tparm N Number of columns.
     */
-  abstract class L1Ops[T : ClassTag,M <: Int : ValueOf, N <: Int : ValueOf] {
+  abstract class L1Ops[T : ClassTag, M <: Int : ValueOf, N <: Int : ValueOf] {
     type Matrix = DenseMatrix[T,M,N]
 
     /** The external BLAS library implementation */
@@ -31,7 +31,6 @@ protected[blas] trait blasOps {
       * This trait is used to build up a description of the expression, to allow optimisation of compound expressions.
       */
     sealed trait L1Matrix extends DenseMatrix[T,M,N] { self : L1Matrix =>
-      val x : Matrix 
       lazy val values : Array[T] = self match {
         case SCAL(alpha,x) => withCopyOf(x)(scal(x.size, alpha, _, x.stride))
         case AXPY(alpha,x,y) => withCopyOf(y)(axpy(y.size, alpha, x.values, x.stride, _, y.stride))
@@ -46,7 +45,7 @@ protected[blas] trait blasOps {
       * Many BLAS subroutines accumulate the result to one of the input parameters. This convenience function
       * can be used to create a copy of that parameter and pass it to the function, so it is not overwritten in-lace.
       */
-    private def withCopyOf(x : Matrix)(f : Array[T] => Unit) : Array[T] = {
+    protected[blasOps] def withCopyOf(x : Matrix)(f : Array[T] => Unit) : Array[T] = {
       val outBuff : Array[T] = Array ofDim x.size
       copy(x.size, x.values, x.stride, outBuff, x.stride)
       f(outBuff)
