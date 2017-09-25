@@ -24,25 +24,36 @@ trait showMatrix {
   implicit def consoleShowFiniteMatrix[T : Show, M <: Int : ValueOf, N <: Int : ValueOf, Mat[t,m <: Int,n <:Int] <: FiniteMatrix[t,m,n]]
       (implicit charset : Charset = Charset.defaultCharset()) : Show[Mat[T,M,N]] =
   new Show[Mat[T,M,N]] {
+    type Matrix = Mat[T,M,N]
+    val showT = implicitly[Show[T]]
     val (maxWidth,maxHeight) = (80/6,80)
     val comma = ", "
 
-    protected def rowToStr(s : Seq[String]) : String = s.mkString(comma)
+    /** Return a sequence of `comma` separated rows with aligned (equal width) elements */
+    protected def matToStr(x : Matrix) : Seq[String] = {
+      val ss : Seq[Seq[String]] = Seq.tabulate(valueOf[M],valueOf[N])( (i,j) => showT show x(i,j))
+      val maxRowWidth = ss.foldLeft(0)(_ max _.length)
+      val maxElemWidth = ss.view.flatten.foldLeft(0)(_ max _.length)
+      ss map { row =>
+         row map { col =>
+           val prefix = Array.fill(maxElemWidth - col.length)(' ')
+           prefix ++: col
+         } mkString comma
+      }
+    }
 
-    def show(x : Mat[T,M,N]) : String = {
-      val showT = implicitly[Show[T]]
-     
+    def show(x : Matrix) : String = {
+      lazy val rows : Seq[String] = matToStr(x)
       if (x.size == 0) "[ Null Matrix (m x n = 0) ]"
       else if (x.cols > maxWidth || x.rows > maxHeight) s"[ Matrix (${x.rows} x ${x.cols} - too large to display) ]"
-      else if (x.rows == 1) "[" ++ rowToStr(Seq.tabulate(x.size)(i => showT.show(x(0,i)))) ++ "]"
+      else if (x.rows == 1) "[" ++ rows.head ++ "]"
       else {
-        val rows : Seq[Seq[String]] = Seq.tabulate(valueOf[M],valueOf[N])((i,j) => showT.show(x(i,j)))
-        val maxWidth = rows.map(_.length).max
-        lazy val blankRow = Seq.fill(maxWidth + rows.length - 1)(' ').toString
+        val maxWidth = rows.foldLeft(0)(_ max _.length)
+        lazy val blankRow = Seq.fill(maxWidth)(' ').toString
         if (Set(UTF_8,UTF_16) contains charset) 
-           s"┌ $blankRow ┐" +: rows.map("│" ++ rowToStr(_) ++ "│" ) :+ s"└ $blankRow ┘"
+           s"┌$blankRow┐" +: rows.map("│" ++ _ ++ "│" ) :+ s"└$blankRow┘"
         else 
-           rows.map("|" ++ rowToStr(_) ++ "|")
+           rows.map("|" ++ _ ++ "|")
       }.mkString("\n")
     }
   }
