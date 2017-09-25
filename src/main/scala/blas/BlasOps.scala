@@ -14,8 +14,11 @@ protected[blas] trait blasOps {
     * @tparm M Number of rows.
     * @tparm N Number of columns.
     */
-  abstract class L1Ops[T : ClassTag, M <: Int : ValueOf, N <: Int : ValueOf] {
+  trait L1Ops[T, M <: Int, N <: Int] {
     type Matrix = DenseMatrix[T,M,N]
+    implicit val ct : ClassTag[T]
+    implicit val m : ValueOf[M]
+    implicit val n : ValueOf[N]
 
     /** The external BLAS library implementation */
     def blas : BLAS

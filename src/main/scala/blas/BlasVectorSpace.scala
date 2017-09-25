@@ -11,8 +11,9 @@ trait blasVectorSpace {
     * @tparm T Element type of the matrix, which must also be the same as the type of the field.
     *          This is a limitation of the library; but remember you can always implicitly upcast an e.g. `Int` to a `Double`.
     */
-  abstract class VectorSpaceMatrixInstance[T : Field : ClassTag, M <: Int : ValueOf, N <: Int : ValueOf]
-      (implicit val blas : BLAS) extends L1Ops[T,M,N] with VectorSpace[DenseMatrix[T,M,N],T]  {
+  abstract class VectorSpaceMatrixInstance[T : Field, M <: Int, N <: Int]
+      (implicit val blas : BLAS, val ct : ClassTag[T], val m : ValueOf[M], val n : ValueOf[N])
+      extends L1Ops[T,M,N] with VectorSpace[DenseMatrix[T,M,N],T]  {
     lazy val size = valueOf[M]*valueOf[N]
 
     /** Returns a matrix with all elements negated. */

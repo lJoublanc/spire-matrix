@@ -19,7 +19,7 @@ trait matrix {
   }
 
   /** A matrix with known dimensions, supporting safe indexing */
-  trait FiniteMatrix[T,M <: Int, N <: Int] extends Matrix[T,M,N] with Function2[Int,Int,T] {
+  trait FiniteMatrix[T,M <: Int, N <: Int] extends Matrix[T,M,N] with ((Int,Int) => T) {
     def rows : M
 
     def cols : N
