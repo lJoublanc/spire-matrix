@@ -12,14 +12,15 @@ lazy val root = (project in file(".")).
         "-language:higherKinds"
       )
     )),
-    name := "BayesTrade Demo",
+    name := "Matrices for Spire",
     libraryDependencies ++= Seq(
       "org.typelevel" %% "spire" % "0.14.1",
+      "org.typelevel" %% "spire-laws" % "0.14.1" % "test",
       "net.sourceforge.f2j" % "arpack_combined_all" % "0.1",
       "com.github.fommil.netlib" % "all" % "1.1.2" // "core" will not pull any blas implemenations.
     ),
     initialCommands := """
-      import blas._t 
+      import blas._
       import com.github.fommil.netlib._
       import spire.std.double._
       import spire.algebra.VectorSpace
