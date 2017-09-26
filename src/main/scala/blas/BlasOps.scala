@@ -7,8 +7,9 @@ import scala.reflect.ClassTag
 protected[blas] trait blasOps {
 
   /** Level 1 BLAS routines.
+    *
     * Note that, while these are toted as "Vector" operations, any method that operates on an `m × n` matrix can be
-    * treated as an `m × 1` vector with `stride = size`, and passed to L1 routines.
+    * treated as an `m × 1` vector with `stride = 1`, and passed to L1 routines.
     * 
     * Implementation note: Derived typeclasses implement operations lazily, in order to allow operator fusion: 
     * pattern matching over expressions to find the 'widest' possible BLAS subroutine to apply. For example, 
@@ -39,6 +40,7 @@ protected[blas] trait blasOps {
     /** Reification of Level 1 BLAS subroutine.
       * This trait is used to build up a description of the expression, to allow optimisation of compound expressions.
       * All matrices are treated as 1-D, regardless of dim, as L1 subroutines take vectors as arguments. //TODO: investigate whether this affects performance?
+      * @see <href a=https://stackoverflow.com/questions/15498187/incx-in-blas-routines>stackoverflow question</href>
       */
     sealed trait L1Matrix extends DenseMatrix[T,M,N] { self : L1Matrix =>
       lazy val values : Array[T] = self match {
