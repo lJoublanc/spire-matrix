@@ -15,10 +15,12 @@ trait blasMatrix {
         in memory, and rows separated by [[stride]] elements. i.e. column-major (fortran) order.*/
     protected[blas] def values : Array[T]
 
-    /** Number of array elements between consecutive rows. */
-    protected[blas] def stride : N = cols
+    /** Number of array elements between consecutive rows, or equivalently, the size of the leading dimension (column).
+      * This value has special significance for some BLAS functions, when set to zero. 
+      */
+    protected[blas] def stride : Int = cols
 
-    /** The element at position(i,j), whose array index is calculated at i + j * stride. */
+    /** The element at position(i,j), whose array index is calculated at `i + j × stride`. */
     def apply(row : Int, col : Int) : T = values(row + col * stride)
   }
 
@@ -27,12 +29,12 @@ trait blasMatrix {
     def fromDenseArray[T : ClassTag, M <: Int : ValueOf, N <: Int : ValueOf](array : Array[T]) : DenseMatrix[T,M,N] =
       new DenseMatrix[T,M,N] {
         val values : Array[T] = {
-          assert(array.length == rows*stride, "Array dims must match declared matrix dims (accounting for stride)")
+          assert(array.length == size, "Array size must match declared matrix size.")
           array
         }
       }
 
-   /** Convenience constructor */
+    /** Convenience constructor */
     def apply[T : ClassTag, M <: Int : ValueOf, N <: Int : ValueOf](xs : T*) : DenseMatrix[T,M,N] =
       fromDenseArray[T,M,N](xs.toArray)
   }
@@ -40,7 +42,7 @@ trait blasMatrix {
   object ColumnVector {
     /** Convenience constructor */
     def apply[T : ClassTag, M <: Int : ValueOf](xs : T*) : ColumnVector[T,M] = {
-      implicit val one = valueOf[1]
+      implicit val n = valueOf[1]
       Matrix.fromDenseArray[T,M,1](xs.toArray)
     }
   }
