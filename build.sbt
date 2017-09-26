@@ -1,5 +1,9 @@
 import Dependencies._
 
+// For parity with non/spire
+lazy val spireVersion = "0.14.1"
+lazy val scalaTestVersion = "3.0.0"
+
 lazy val root = (project in file(".")).
   settings(
     inThisBuild(List(
@@ -14,8 +18,9 @@ lazy val root = (project in file(".")).
     )),
     name := "Matrices for Spire",
     libraryDependencies ++= Seq(
-      "org.typelevel" %% "spire" % "0.14.1",
-      "org.typelevel" %% "spire-laws" % "0.14.1" % "test",
+      "org.typelevel" %% "spire" % spireVersion,
+      "org.typelevel" %% "spire-laws" % spireVersion % "test",
+      "org.scalatest" %% "scalatest" % scalaTestVersion % "test",
       "net.sourceforge.f2j" % "arpack_combined_all" % "0.1",
       "com.github.fommil.netlib" % "all" % "1.1.2" // "core" will not pull any blas implemenations.
     ),

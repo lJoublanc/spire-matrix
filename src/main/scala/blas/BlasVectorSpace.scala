@@ -45,8 +45,8 @@ trait blasVectorSpace {
   }
 
   import spire.std.double._
-  import blas.DenseMatrix
-  implicit def denseMatrixOfDoubleVectorSpace[M <: Int : ValueOf, N <: Int : ValueOf](implicit blas : BLAS) : VectorSpaceDenseMatrixInstance[Double,M,N] = 
+  implicit def denseMatrixOfDoubleVectorSpace[M <: Int : ValueOf, N <: Int : ValueOf](implicit blas : BLAS) :
+    VectorSpace[DenseMatrix[Double,M,N],Double] = 
     new VectorSpaceDenseMatrixInstance[Double,M,N] {
     import blas._
   

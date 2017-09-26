@@ -4,6 +4,8 @@ import com.github.fommil.netlib.BLAS
 
 import scala.reflect.ClassTag
 
+import scala.annotation.implicitNotFound
+
 protected[blas] trait blasOps {
 
   /** Level 1 BLAS routines.
@@ -21,6 +23,7 @@ protected[blas] trait blasOps {
     * @tparm M Number of rows.
     * @tparm N Number of columns.
     */
+  @implicitNotFound("Most common cause is dimension mismatch or missing implicit BLAS library instance.")
   protected[blas] trait L1GeneralDenseOps[T, M <: Int, N <: Int] {
     type Matrix = DenseMatrix[T, M, N]
     implicit val ct : ClassTag[T]
