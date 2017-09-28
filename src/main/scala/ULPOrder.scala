@@ -40,7 +40,7 @@ trait ULPOrderDouble extends Order[Double] {
   override def lt(x: Double, y: Double): Boolean = compare(x, y) < 0
   override def gteqv(x: Double, y: Double): Boolean = compare(x, y) >= 0
   override def gt(x: Double, y: Double): Boolean = compare(x, y) > 0
-  override def compare(x: Double, y: Double): Int =  {
+  override def compare(x: Double, y: Double): Int =
     if (x.isNegative != y.isNegative) {
       if (x == y) 0  // +0 == -0
       else if (x.isNegative) -1 else +1
@@ -50,5 +50,4 @@ trait ULPOrderDouble extends Order[Double] {
       if ( abs(diff) <= δ ) 0
       else if (diff < 0) -1 else +1
     }
-}
 }
