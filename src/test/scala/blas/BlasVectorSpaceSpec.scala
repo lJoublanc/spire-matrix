@@ -1,18 +1,15 @@
 package blas
 
-import spire.algebra.{VectorSpace}
-import spire.laws._ // required for implicit discipline.Predicate
-import blas._
-
+import spire.laws._
 import org.typelevel.discipline.scalatest.Discipline
 import org.scalatest.FunSuite
-import org.scalacheck.{Arbitrary,Gen}
+import org.scalacheck.{Arbitrary, Gen}
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalacheck.util.Buildable
 
 import scala.reflect.ClassTag
-
-import com.github.fommil.netlib.{BLAS,F2jBLAS}
+import com.github.fommil.netlib.{BLAS, F2jBLAS}
+import spire.syntax.vectorSpace
 
 class BlasVectorSpaceSpec extends FunSuite with Discipline {
   import math.ULPOrderDouble
@@ -34,11 +31,11 @@ class BlasVectorSpaceSpec extends FunSuite with Discipline {
       }
     }
   }
-         
-  checkAll("BLAS double precision dense matrix (square)", VectorSpaceLaws[DenseMatrix[Double,2,2],Double].vectorSpace)
-  checkAll("BLAS double precision dense matrix (rectangular)", VectorSpaceLaws[DenseMatrix[Double,2,3],Double].vectorSpace)
+
   checkAll("BLAS double precision dense matrix (column vector)", VectorSpaceLaws[DenseMatrix[Double,5,1],Double].vectorSpace)
   checkAll("BLAS double precision dense matrix (row vector)", VectorSpaceLaws[DenseMatrix[Double,1,5],Double].vectorSpace)
-  checkAll("BLAS double precision dense matrix (null matrix)", VectorSpaceLaws[DenseMatrix[Double,5,1],Double].vectorSpace)
-  
+  checkAll("BLAS double precision dense matrix (square)", VectorSpaceLaws[DenseMatrix[Double,2,2],Double].vectorSpace)
+  checkAll("BLAS double precision dense matrix (rectangular)", VectorSpaceLaws[DenseMatrix[Double,2,3],Double].vectorSpace)
+  //checkAll("BLAS double precision dense matrix (null matrix)", VectorSpaceLaws[DenseMatrix[Double,2,2],Double].vectorSpace)
+
 }

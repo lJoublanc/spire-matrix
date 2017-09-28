@@ -12,16 +12,17 @@ protected[blas] trait blasOps {
     *
     * Note that, while these are toted as "Vector" operations, any method that operates on an `m × n` matrix can be
     * treated as an `m × 1` vector with `stride = 1`, and passed to L1 routines.
-    * 
+    *
     * Implementation note: Derived typeclasses implement operations lazily, in order to allow operator fusion: 
     * pattern matching over expressions to find the 'widest' possible BLAS subroutine to apply. For example, 
     * The signature of the expression `X + α Y` does not match the blas subroutine `_AXPY` (the scalar should
     * pre-multiply `X`), but we can pattern match and use properties of addition (commutativity) to re-arrange the 
     * expression to match it's signature. The actual matching step is implemented in the aglebra type-classes.
     *
-    * @tparm The element type of the matrix
-    * @tparm M Number of rows.
-    * @tparm N Number of columns.
+    * @tparam T The element type of the matrix
+    * @tparam M Number of rows.
+    * @tparam N Number of columns.
+    * @see BLAST §2.5.3 Array Arguments
     */
   @implicitNotFound("Most common cause is dimension mismatch or missing implicit BLAS library instance.")
   protected[blas] trait L1GeneralDenseOps[T, M <: Int, N <: Int] {
@@ -33,11 +34,11 @@ protected[blas] trait blasOps {
     /** The external BLAS library implementation */
     def blas : BLAS
 
-    /* Section 2.8.4 : Vector Operations. */
+    /* § 2.8.4 : Vector Operations. */
     val scal : (Int, T, Array[T], Int) => Unit
     val axpy : (Int, T, Array[T], Int, Array[T], Int) => Unit
 
-    /* Section 2.8.5 : Data Movement with Vecors. */
+    /* § 2.8.5 : Data Movement with Vecors. */
     val copy : (Int, Array[T], Int, Array[T], Int) => Unit
 
     /** Reification of Level 1 BLAS subroutine.
@@ -71,12 +72,11 @@ protected[blas] trait blasOps {
     }
   }
 
-  /** Level 2 BLAS routines.
-    */
+  /** Level 2 BLAS routines. */
   protected[blas] trait L2GeneralDenseOps[T, M <: Int, N <: Int] extends L1GeneralDenseOps[T, M, N] {
     import TransX._
 
-    /* Section 2.8.7 : Matrix Operations */
+    /* § 2.8.7 : Matrix Operations */
     val gemm : (String, Int, Int, Int, T, Array[T], Int, Array[T], Int, T, Array[T], Int) => Unit
 
     /** Reification of Level 2 BLAS subroutine.
@@ -84,7 +84,7 @@ protected[blas] trait blasOps {
       */
     sealed trait L2Matrix extends L1Matrix { self : L2Matrix =>
       override lazy val values : Array[T] = self match {
-        case GEMM(α,a,b,β,c) => withCopyOf(c){ gemm(NoTrans.toString, valueOf[M], valueOf[N], a.cols, α, a.values, a.stride, b.values, b.stride, β, _, a.stride) }
+        case GEMM(α,a,b,β,c) => withCopyOf(c){ gemm(NoTrans.toString, valueOf[M], valueOf[N], a.cols, α, a.values, a.rows, b.values, b.rows, β, _, a.rows) }
       }
     }
 

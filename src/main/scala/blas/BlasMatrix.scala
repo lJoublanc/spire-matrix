@@ -12,16 +12,11 @@ trait blasMatrix {
     def cols : N = valueOf[N]
 
     /** An immutable, 1-D array containing the matrix elements, the columns of wich are assumed to be contiguous 
-        in memory, and rows separated by [[stride]] elements. i.e. column-major (fortran) order.*/
+        in memory, and cols separated by [[rows]] elements. i.e. column-major (fortran) order.*/
     protected[blas] def values : Array[T]
 
-    /** Number of array elements between consecutive rows, or equivalently, the size of the leading dimension (column).
-      * This value has special significance for some BLAS functions, when set to zero. 
-      */
-    protected[blas] def stride : Int = cols
-
     /** The element at position(i,j), whose array index is calculated at `i + j × stride`. */
-    def apply(row : Int, col : Int) : T = values(row + col * stride)
+    def apply(row : Int, col : Int) : T = values(row + col * rows)
   }
 
   object Matrix {

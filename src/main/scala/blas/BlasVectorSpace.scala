@@ -25,7 +25,6 @@ trait blasVectorSpace {
       * This implementation is optimized to allow fast return form certain BLAS routines, by setting stride = 0
       */
     val zero: Matrix = new DenseMatrix[T,M,N] {
-      override def stride = 0
       def values = Array.fill(size)(scalar.zero)
       override def apply(i : Int, j : Int) = scalar.zero
     }
