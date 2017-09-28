@@ -46,7 +46,7 @@ trait ULPOrderDouble extends Order[Double] {
       else if (x.isNegative) -1 else +1
     }
     else { 
-      val diff : Long = (x.i - y.i)
+      val diff : Long = x.i - y.i
       if ( abs(diff) <= δ ) 0
       else if (diff < 0) -1 else +1
     }
