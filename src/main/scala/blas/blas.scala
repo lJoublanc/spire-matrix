@@ -12,6 +12,7 @@
  * The matrix element type T must belong to the set of Reals, Doubles or Complex (TBC).
  *
  * @see <href a=http://www.netlib.org/blas/blast-forum>BLAS Technical Forum Standard</href>
+ * @see <href a=http://math.nist.gov/javanumerics/blas.html>Java Numerics disussion on BLAS</href>
  */
 package object blas
   extends blasMatrix
