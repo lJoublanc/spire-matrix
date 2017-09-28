@@ -29,6 +29,12 @@ trait matrix {
 
     /** The element at position i,j. */
     def apply(row : Int, col : Int) : T
+
+    /** Refer to [[math.show]] for a more flexible display type-classes */
+    override def toString : String = {
+      if (size > 40) s"<$rows × $cols matrix>" 
+      else Seq.tabulate(rows,cols)(apply).toString
+    }
   }
 
   /** A `ColumnVector` is just a type alias for a `M` x 1 matrix. */
@@ -38,7 +44,3 @@ trait matrix {
   type SquareMatrix[T, M <: Int] = FiniteMatrix[T,M,M]
 
 }
-
-
-
-
