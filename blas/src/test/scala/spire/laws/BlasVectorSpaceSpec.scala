@@ -1,6 +1,5 @@
-package blas
+package spire.laws
 
-import spire.laws._
 import org.typelevel.discipline.scalatest.Discipline
 import org.scalatest.FunSuite
 import org.scalacheck.{Arbitrary, Gen}
@@ -10,24 +9,27 @@ import org.scalacheck.util.Buildable
 import scala.reflect.ClassTag
 import com.github.fommil.netlib.{BLAS, F2jBLAS}
 import spire.syntax.vectorSpace
+import spire.math.optional.ULPOrderDouble
+import spire.math.Matrix
+import spire.math.matrix._
+import spire.std.matrix._
+import spire.blas._
 
 class BlasVectorSpaceSpec extends FunSuite with Discipline {
-  import math.ULPOrderDouble
-  import math.finiteMatrixEqInstance
 
   // Override [in]equality operators
 
   implicit val blasInstance : BLAS = new F2jBLAS()
 
   // These two allow us to do 'soft' comparison of floating point numbers.
-  implicit object DoubleAlgebra extends spire.std.DoubleAlgebra with ULPOrderDouble
+  implicit object DoubleAlgebra extends spire.std.DoubleAlgebra with ULPOrderDouble { val δ = 50 }
   implicit val arbDouble : Arbitrary[Double] = Arbitrary { Gen.choose(-1e6,1e6) }
     
   implicit def arbitraryDoubleMatrix[T : Arbitrary : ClassTag, M <: Int : ValueOf, N <: Int : ValueOf] : Arbitrary[DenseMatrix[T,M,N]] = {
     implicit val builder = implicitly[Buildable[T,Array[T]]]
     Arbitrary {
       Gen.containerOfN[Array,T](valueOf[M]*valueOf[N], arbitrary[T]) map { as =>
-        blas.Matrix.fromDenseArray[T,M,N](as)
+        Matrix.fromDenseArray[T,M,N](as)
       }
     }
   }

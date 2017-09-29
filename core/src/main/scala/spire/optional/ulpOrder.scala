@@ -1,23 +1,27 @@
-package math
+package spire.math.optional
 
 import spire.algebra.Order
 
-object ULPOrderSingle {
-  /** Convenience functions for introspecting IEEE-754 numbers. */
+/* Templating these is a lot of work for very small gain, as there are only two possible implementations for Java. */
+object ULPOrder {
+
+  /** Convenience functions for introspecting IEEE-754 single-precision numbers. */
   implicit class IEEE754Float(val f : Float) {
      def i : Int = java.lang.Float.floatToIntBits(f)
      def isNegative : Boolean = i < 0
      // def mantissa = i & ( (1 << 23) - 1 )
      // def exponent = (i >> 23) & 0xFF
   }
-}
 
-object ULPOrderDouble {
-  /** Convenience functions for manipulating IEEE-754 numbers. */
+  /** Convenience functions for introspecting IEEE-754 double-precision numbers. */
   implicit class IEEE754Double(val f : Double) {
      def i : Long = java.lang.Double.doubleToLongBits(f)
      def isNegative : Boolean = i < 0
   }
+
+  def single(delta : Int = 50) : Order[Float] = ???
+
+  def double(delta : Long = 50) : Order[Double] = new ULPOrderDouble { val δ = delta }
 }
 
 /**
@@ -29,9 +33,9 @@ object ULPOrderDouble {
   * @see [[https://randomascii.wordpress.com/2012/02/25/comparing-floating-point-numbers-2012-edition section "ULP, he said nervously"]]
   */
 trait ULPOrderDouble extends Order[Double] {
-  import ULPOrderDouble._
+  import ULPOrder._
   import java.lang.Math.abs
-  val δ : Long = 50
+  val δ : Long
 
   override def eqv(x: Double, y: Double): Boolean = compare(x, y) == 0
   override def neqv(x: Double, y: Double): Boolean = compare(x, y) != 0

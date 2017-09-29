@@ -1,6 +1,6 @@
-package math.show
+package spire.cats
 
-import math.FiniteMatrix
+import spire.math.FiniteMatrix
 
 import java.nio.charset.Charset
 import java.nio.charset.StandardCharsets.{UTF_16,UTF_8}

@@ -1,10 +1,12 @@
-package math
+package spire.std
 
-import cats.kernel.Eq
+import spire.algebra.Eq
+import spire.math.FiniteMatrix
 
 import spire.implicits._
 
-trait matrixEq {
+/** Implementing modules can use this for a naive equality implementation in the spire.math.matrix module */
+trait MatrixInstance {
 
   /** Naive implementation of matrix equality. Checks element-by-element equivalence. */
   class FiniteMatrixEq[Mat[t,m <: Int, n <: Int] <: FiniteMatrix[t,m,n], T : Eq, M <: Int, N <: Int] extends Eq[Mat[T, M, N]] {

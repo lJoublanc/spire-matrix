@@ -1,12 +1,11 @@
-package blas
+package spire.blas
 
 import com.github.fommil.netlib.BLAS
 
 import scala.reflect.ClassTag
-
 import scala.annotation.implicitNotFound
 
-protected[blas] trait blasOps {
+protected[blas] object blasOps {
 
   /** Level 1 BLAS routines.
     *

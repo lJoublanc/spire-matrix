@@ -1,3 +1,10 @@
+package spire.std
+
+import spire.blas.{DenseMatrix,VectorSpaceDenseMatrixInstance}
+import spire.algebra.{VectorSpace,Field}
+
+import com.github.fommil.netlib.BLAS
+
 /** This package implements matrix and vector data types and algebras using external BLAS libraries.
   *
   * We use the Fortran 77 language bindings translated to JVM, via netlib-java.
@@ -14,7 +21,17 @@
   *       u,v,w,x,y,z - (column) vectors
   *       greek letters) - scalars
   */
-package object blas
-  extends blasMatrix
-  with blasOps
-  with blasVectorSpace
+package object matrix extends MatrixInstance {
+
+  import spire.std.double._
+  /** Vector space instance for BLAS dense matrices */
+  implicit def denseMatrixOfDoubleVectorSpace[M <: Int : ValueOf, N <: Int : ValueOf](implicit blas : BLAS) :
+    VectorSpace[DenseMatrix[Double,M,N],Double] = 
+    new VectorSpaceDenseMatrixInstance[Double,M,N] { self =>
+    import self.blas._
+  
+    lazy val scal = dscal
+    lazy val axpy = daxpy
+    lazy val copy = dcopy
+  }
+}
