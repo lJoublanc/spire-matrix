@@ -1,7 +1,6 @@
 package math
 
-import spire.algebra.{Ring,Order,Signed}
-import scala.specialized
+import spire.algebra.Order
 
 object ULPOrderSingle {
   /** Convenience functions for introspecting IEEE-754 numbers. */
@@ -27,7 +26,7 @@ object ULPOrderDouble {
   * Mix this into an `xxxAlgebra` to override ordering.
   * Overrides `eqv`, `neqv` etc. with the defaults form [[cats.kernel.Order]], that just forward to `compare`.
   * Adapted from `randomascii`.
-  * @see <href a=https://randomascii.wordpress.com/2012/02/25/comparing-floating-point-numbers-2012-edition/>section "ULP, he said nervously"</href>
+  * @see [[https://randomascii.wordpress.com/2012/02/25/comparing-floating-point-numbers-2012-edition section "ULP, he said nervously"]]
   */
 trait ULPOrderDouble extends Order[Double] {
   import ULPOrderDouble._

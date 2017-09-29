@@ -8,10 +8,12 @@ import scala.reflect.ClassTag
 trait blasVectorSpace {
 
   /** A Type Class for Vector Spaces of `m × n` dense matrices, using BLAS L1 for operations.
-    * As vector space methods operate on elements independently, an `m × n` array can simply be treated as 
+    *
+    * As vector space methods operate on elements independently, an `m × n` array can simply be treated as
     * an `m × 1` vector with the appropriate stride, and passed to L1 routines.
-    * @tparm T Element type of the matrix, which must also be the same as the type of the field.
-    *          This is a limitation of the library; but remember you can always implicitly upcast an e.g. `Int` to a `Double`.
+    *
+    * @tparam T Element type of the matrix, which must also be the same as the type of the field.
+    *           This is a limitation of the library; but remember you can always implicitly upcast an e.g. `Int` to a `Double`.
     */
   abstract class VectorSpaceDenseMatrixInstance[T : Field, M <: Int, N <: Int]
       (implicit val blas : BLAS, val ct : ClassTag[T], val m : ValueOf[M], val n : ValueOf[N])

@@ -22,7 +22,7 @@ protected[blas] trait blasOps {
     * @tparam T The element type of the matrix
     * @tparam M Number of rows.
     * @tparam N Number of columns.
-    * @see BLAST §2.5.3 Array Arguments
+    * @see BLAST § 2.5.3 Array Arguments
     */
   @implicitNotFound("Most common cause is dimension mismatch or missing implicit BLAS library instance.")
   protected[blas] trait L1GeneralDenseOps[T, M <: Int, N <: Int] {
@@ -60,8 +60,8 @@ protected[blas] trait blasOps {
     /** Make a copy of the output argument so that `f` becomes referentially transparent.
       * Many BLAS subroutines accumulate the result into one of the input parameters. This convenience function
       * can be used to create a copy of that parameter and pass it to the function, so it is not overwritten in-place.
-      * @parm x the mutable 'output' parameter, a copy of which will be passed to f, to avoid mutation.
-      * @parm f the function literal [[[output => f(output)]]]
+      * @param x the mutable 'output' parameter, a copy of which will be passed to f, to avoid mutation.
+      * @param f the function literal `output => f(output)`
       * @return the value of the output parameter.
       */
     protected[blasOps] def withCopyOf(x : Matrix)(f : Array[T] => Unit) : Array[T] = {

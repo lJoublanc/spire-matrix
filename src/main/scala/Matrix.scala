@@ -1,14 +1,12 @@
 package math 
 
-import scala.reflect.ClassTag
-
 trait matrix {
 
   /**
     * An immutable 2-D Matrix.
-    * @tparm T The type of the matrix elements.
-    * @tparm M Number of rows (may be abstract).
-    * @tparm N Number of columns (may be abstract).
+    * @tparam T The type of the matrix elements.
+    * @tparam M Number of rows (may be abstract).
+    * @tparam N Number of columns (may be abstract).
     */
   trait Matrix[T,M,N] {
     /** Number of rows in the matrix */
@@ -43,4 +41,7 @@ trait matrix {
   /** A `ColumnVector` is just a type alias for a `M` x `M` matrix. */
   type SquareMatrix[T, M <: Int] = FiniteMatrix[T,M,M]
 
+  /* trait Transpose[Mat[t,m <: Int, n <: Int] <: FiniteMatrix[t,m,n] , T, M <: Int, N <: Int] extends FiniteMatrix[T,N,M] { self : Mat[T,M,N] =>
+    def apply(row : Int, col : Int) : T = self(col,row)
+  } */
 }

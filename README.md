@@ -47,19 +47,21 @@ val C = A * B //doesn't compile
 
 ## Dependencies
 
-    libraryDependencies ++= ( "org.typelevel" %% "spire-matrix-all" % 0.1 )
+* Typelevel 2.12.3 scala compiler. [type-literal support is required](https://github.com/typelevel/scala/blob/typelevel-readme/notes/typelevel-4.md#literal-types-pull5310-milesabin) for specifying matrix dimensions.
+* netlib-java bindings.
+* native BLAS/LAPACK (optional) libraries for performance.
 
 ### Modules
-`spire-matrix-all` pulls in all the dependencies. You can instead pick and choose modules:
+`spire-matrix-all` pulls in all the dependencies. Include it in your SBT project like so:
+
+    libraryDependencies ++= ( "org.typelevel" %% "spire-matrix-all" % 0.1 )
+    
+Or pick and chose individual modules:
 
 * `spire-matrix-all`
   * `spire-matrix-core` imports live under `spire.std`. Note currently there are no default JVM implementations so this is just a set of traits.
     * `spire-matrix-blas` import live under `spire.std.matrix.blas`
   * `spire-pageant` Natural mathematical input (i.e. syntax) through UTF-16 operators and output via MathML, for use with notebook systems. TBC: probably move to it's own repo. This allows writing expressions such as $ val f = α X + x′ Y $.
-
-* Typelevel 2.12.3 scala compiler. [type-literal support is required](https://github.com/typelevel/scala/blob/typelevel-readme/notes/typelevel-4.md#literal-types-pull5310-milesabin) for specifying matrix dimensions.
-* netlib-java bindings.
-* native BLAS/LAPACK (optional) libraries for performance.
 
 
 ## Related Work
@@ -72,5 +74,5 @@ Netlib:
 Most of the numerical routines are implemented via calls to Netlib's soubroutines in 
 * [LAPACK](http://www.netlib.org/lapack/)
 * [BLAS](http://www.netlib.org/blas/) which is distributed with LAPACK.
-* [netlib-java](https://webcache.googleusercontent.com/search?q=cache:1OzhoqU_3uYJ:https://github.com/fommil/netlib-java/tree/master/netlib+&cd=1&hl=en&ct=clnk&gl=uk) Java bindings to netlib, which appears to have been discontinued, which unfortunately appears to have been [discontinued](https://stackoverflow.com/questions/46267411/has-netlib-java-been-discontinued)
+* [netlib-java](https://webcache.googleusercontent.com/search?q=cache:1OzhoqU_3uYJ:https://github.com/fommil/netlib-java/tree/master/netlib+&cd=1&hl=en&ct=clnk&gl=uk) Java bindings to netlib, which unfortunately appears to have been [discontinued](https://stackoverflow.com/questions/46267411/has-netlib-java-been-discontinued)
 

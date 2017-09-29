@@ -41,7 +41,4 @@ trait blasMatrix {
       Matrix.fromDenseArray[T,M,1](xs.toArray)
     }
   }
-
-  /** As per BLAS spec for packing efficiently */
-  /* trait ULMatrix[T,R,C] extends Matrix */
 }
