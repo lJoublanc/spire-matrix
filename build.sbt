@@ -50,6 +50,7 @@ lazy val blas = (project in file("blas")).
 
 lazy val cats = (project in file("cats")).
   settings(
-    name := "Cats interop for Matrices for Spire"
+    name := "Cats interop for Matrices for Spire",
+    libraryDependencies += "org.typelevel" %% "cats-core" % "1.0.0-MF"
   ).
   dependsOn(core)

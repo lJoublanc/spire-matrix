@@ -5,10 +5,9 @@ import spire.math.FiniteMatrix
 import java.nio.charset.Charset
 import java.nio.charset.StandardCharsets.{UTF_16,UTF_8}
 
-trait showMatrix {
-  /** Modeled after cats.show. It should be possible to directly replace it. */
-  trait Show[-T] extends AnyRef { def show(t : T) : String }
+import cats.Show
 
+trait showMatrix {
   implicit class ShowOpsSyntax[T](t : T)(implicit S: Show[T]) extends AnyRef { def show : String = S.show(t) }
 
   /** Given a function from T to String, generate a `Show` */
