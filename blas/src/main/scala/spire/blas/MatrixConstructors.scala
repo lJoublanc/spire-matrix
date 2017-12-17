@@ -1,10 +1,10 @@
-package spire.math
+package spire.blas
 
-import spire.blas.DenseMatrix
+import spire.math.matrix._
 import scala.reflect.ClassTag
 
-package object matrix {
-  implicit class BLASMatrixConsOps(protected val companion : spire.math.Matrix.type) {
+trait MatrixConstructors {
+  implicit class MatrixConsOps(protected val companion : Matrix.type) {
     /** Creates a matrix of known dimensions, backed by an existing column-major array. */
     def fromDenseArray[T : ClassTag, M <: Int : ValueOf, N <: Int : ValueOf](array : Array[T]) : DenseMatrix[T,M,N] =
       new DenseMatrix[T,M,N] {
@@ -15,7 +15,7 @@ package object matrix {
       }
 
     /** @constructor Canonical constructor. */
-    def apply[T : ClassTag, M <: Int : ValueOf, N <: Int : ValueOf](xs : T*) : FiniteMatrix[T,M,N] =
+    def apply[T : ClassTag, M <: Int : ValueOf, N <: Int : ValueOf](xs : T*) : DenseMatrix[T,M,N] =
       fromDenseArray[T,M,N](xs.toArray)
 
     /** Assumes 1-D column vector. */

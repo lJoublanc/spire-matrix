@@ -4,7 +4,7 @@ lazy val scalaTestVersion = "3.0.0"
 
 lazy val commonSettings = inThisBuild(Seq(
   scalaOrganization := "org.typelevel", // provide literal types
-  scalaVersion := "2.12.3-bin-typelevel-4",
+  scalaVersion := "2.12.4-bin-typelevel-4",
   version      := "0.1.0-SNAPSHOT",
   libraryDependencies += "org.typelevel" %% "spire" % spireVersion,
   scalacOptions ++= Seq(
@@ -40,10 +40,14 @@ lazy val blas = (project in file("blas")).
       "com.github.fommil.netlib" % "all" % "1.1.2" // "core" will not pull any blas implemenations.
     ),
     initialCommands += """
-        import blas._
-        import com.github.fommil.netlib._
+      import spire.std.double._
+      import spire.algebra.VectorSpace
+      import spire.syntax.vectorSpace._
+      import spire.math.matrix._
+      import spire.blas.implicits._
+      import com.github.fommil.netlib._
 
-        implicit val blasInstance : BLAS = new F2jBLAS()
+      implicit val blasInstance : BLAS = new F2jBLAS()
     """
   ).dependsOn(core)
 

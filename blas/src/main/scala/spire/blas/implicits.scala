@@ -1,7 +1,7 @@
-package spire.std
+package spire.blas
 
-import spire.blas.{DenseMatrix,VectorSpaceDenseMatrixInstance}
 import spire.algebra.{VectorSpace,Field}
+import spire.std.MatrixInstance
 
 import com.github.fommil.netlib.BLAS
 
@@ -21,17 +21,7 @@ import com.github.fommil.netlib.BLAS
   *       u,v,w,x,y,z - (column) vectors
   *       greek letters) - scalars
   */
-package object matrix extends MatrixInstance {
-
-  import spire.std.double._
-  /** Vector space instance for BLAS dense matrices */
-  implicit def denseMatrixOfDoubleVectorSpace[M <: Int : ValueOf, N <: Int : ValueOf](implicit blas : BLAS) :
-    VectorSpace[DenseMatrix[Double,M,N],Double] = 
-    new VectorSpaceDenseMatrixInstance[Double,M,N] { self =>
-    import self.blas._
-  
-    lazy val scal = dscal
-    lazy val axpy = daxpy
-    lazy val copy = dcopy
-  }
-}
+package object implicits 
+extends MatrixInstance
+with Algebra
+with MatrixConstructors

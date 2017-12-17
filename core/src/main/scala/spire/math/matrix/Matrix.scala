@@ -1,4 +1,4 @@
-package spire.math 
+package spire.math.matrix
 
 /**
   * An immutable 2-D Matrix.

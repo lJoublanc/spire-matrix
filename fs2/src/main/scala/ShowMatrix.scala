@@ -1,6 +1,6 @@
 package spire.fs2
 
-import spire.math.FiniteMatrix
+import spire.math.matrix.FiniteMatrix
 
 import java.nio.charset.Charset
 import java.nio.charset.StandardCharsets.{UTF_16,UTF_8}

@@ -5,6 +5,7 @@ import com.github.fommil.netlib.BLAS
 import scala.reflect.ClassTag
 import scala.annotation.implicitNotFound
 
+// This is not a package object because it can't be defined protected.
 protected[blas] object blasOps {
 
   /** Level 1 BLAS routines.

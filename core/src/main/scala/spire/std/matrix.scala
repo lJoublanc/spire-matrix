@@ -1,7 +1,7 @@
 package spire.std
 
 import spire.algebra.Eq
-import spire.math.FiniteMatrix
+import spire.math.matrix.FiniteMatrix
 
 import spire.implicits._
 

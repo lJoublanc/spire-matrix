@@ -10,10 +10,9 @@ import scala.reflect.ClassTag
 import com.github.fommil.netlib.{BLAS, F2jBLAS}
 import spire.syntax.vectorSpace
 import spire.math.optional.ULPOrderDouble
-import spire.math.Matrix
 import spire.math.matrix._
-import spire.std.matrix._
 import spire.blas._
+import spire.blas.implicits._
 
 class BlasVectorSpaceSpec extends FunSuite with Discipline {
 

@@ -1,6 +1,6 @@
 package spire.blas
 
-import spire.math.FiniteMatrix
+import spire.math.matrix.FiniteMatrix
 
 import scala.reflect.ClassTag
 
