@@ -36,7 +36,7 @@ BandedMatrix
 ## QuickStart
 
 
-```
+```scala
 val A : Matrix[Double,2,2] = ???
 val B : Matrix[Double,2,3] = ???
 
@@ -66,7 +66,7 @@ Or pick and chose individual modules:
 
 ## Related Work
 
-Scala Alternatives:
+See also:
 * [Scala NLP Breeze](https://github.com/scalanlp/breeze/) Used by many machine learning libraries.
 * [Luc J Bourhis' Spire Fork](https://github.com/luc-j-bourhis/spire/tree/topic/matrix-wip) An alternative implementation also backed by BLAS. Last updated 2013.
 

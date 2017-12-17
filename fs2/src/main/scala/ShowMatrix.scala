@@ -1,4 +1,4 @@
-package spire.cats
+package spire.fs2
 
 import spire.math.FiniteMatrix
 

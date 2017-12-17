@@ -22,7 +22,7 @@ class BlasVectorSpaceSpec extends FunSuite with Discipline {
   implicit val blasInstance : BLAS = new F2jBLAS()
 
   // These two allow us to do 'soft' comparison of floating point numbers.
-  implicit object DoubleAlgebra extends spire.std.DoubleAlgebra with ULPOrderDouble { val δ = 50 }
+  implicit object DoubleAlgebra extends spire.std.DoubleAlgebra with ULPOrderDouble { val δ = 1000 }
   implicit val arbDouble : Arbitrary[Double] = Arbitrary { Gen.choose(-1e6,1e6) }
     
   implicit def arbitraryDoubleMatrix[T : Arbitrary : ClassTag, M <: Int : ValueOf, N <: Int : ValueOf] : Arbitrary[DenseMatrix[T,M,N]] = {

@@ -1,5 +1,3 @@
-import Dependencies._
-
 // For parity with non/spire
 lazy val spireVersion = "0.14.1"
 lazy val scalaTestVersion = "3.0.0"
@@ -19,7 +17,7 @@ lazy val commonSettings = inThisBuild(Seq(
 lazy val core = (project in file("core")).
   settings(commonSettings: _*).
   settings(
-    name := "spire-matrix",
+    name := "Matrices for Spire (core)",
     libraryDependencies ++= Seq(
       "org.typelevel" %% "spire-laws" % spireVersion % "test",
       "org.scalatest" %% "scalatest" % scalaTestVersion % "test"
@@ -34,6 +32,7 @@ lazy val core = (project in file("core")).
 lazy val blas = (project in file("blas")).
   settings(commonSettings : _*).
   settings(
+    name := "Matrices for Spire (BLAS implementation)",
     libraryDependencies ++= Seq(
       "org.typelevel" %% "spire-laws" % spireVersion % "test",
       "org.scalatest" %% "scalatest" % scalaTestVersion % "test",
@@ -48,9 +47,9 @@ lazy val blas = (project in file("blas")).
     """
   ).dependsOn(core)
 
-lazy val cats = (project in file("cats")).
+lazy val fs2 = (project in file("fs2")).
   settings(
-    name := "Cats interop for Matrices for Spire",
-    libraryDependencies += "org.typelevel" %% "cats-core" % "1.0.0-MF"
+    name := "Matrices for Spire (fs2 implementation)",
+    libraryDependencies += "co.fs2" %% "fs2-core" % "0.10.0-M8" 
   ).
   dependsOn(core)
