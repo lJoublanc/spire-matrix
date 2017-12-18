@@ -22,6 +22,6 @@ import com.github.fommil.netlib.BLAS
   *       greek letters) - scalars
   */
 package object implicits 
-extends MatrixInstance
+extends Matrix
+with MatrixInstance
 with Algebra
-with MatrixConstructors

@@ -1,10 +1,11 @@
 package spire.blas
 
-import spire.math.matrix._
+import spire.math.matrix
 import scala.reflect.ClassTag
 
-trait MatrixConstructors {
-  implicit class MatrixConsOps(protected val companion : Matrix.type) {
+/** Extension methods for [[spire.math.matrix.Matrix]] companion. */
+trait Matrix {
+  implicit class MatrixConsOps(protected val companion : matrix.Matrix.type) {
     /** Creates a matrix of known dimensions, backed by an existing column-major array. */
     def fromDenseArray[T : ClassTag, M <: Int : ValueOf, N <: Int : ValueOf](array : Array[T]) : DenseMatrix[T,M,N] =
       new DenseMatrix[T,M,N] {
