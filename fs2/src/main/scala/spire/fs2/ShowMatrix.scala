@@ -20,10 +20,10 @@ trait showMatrix {
   implicit val realShow : Show[Float] = from[Float]( d => f"$d%.2f")
 
   /** Display on a console. Supports matrices of dimensions up to 80x80 and supports unicode */
-  implicit def consoleShowFiniteMatrix[T : Show, M <: Int : ValueOf, N <: Int : ValueOf, Mat[t,m <: Int,n <:Int] <: FiniteMatrix[t,m,n]]
-      (implicit charset : Charset = Charset.defaultCharset()) : Show[Mat[T,M,N]] =
-  new Show[Mat[T,M,N]] {
-    type Matrix = Mat[T,M,N]
+  implicit def consoleShowFiniteMatrix[M <: Int : ValueOf, N <: Int : ValueOf, T : Show, Mat[m <: Int, n <:Int, t] <: FiniteMatrix[m, n, t]]
+      (implicit charset : Charset = Charset.defaultCharset()) : Show[Mat[M,N,T]] =
+  new Show[Mat[M, N, T]] {
+    type Matrix = Mat[M, N, T]
     val showT = implicitly[Show[T]]
     val (maxWidth,maxHeight) = (80/6,80)
     val comma = ", "

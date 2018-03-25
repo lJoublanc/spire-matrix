@@ -14,8 +14,8 @@ trait Matrix {
 final class PartiallyAppliedMatrix[M <: Int , N <: Int] extends AnyRef {
 
   /** Creates a matrix of known dimensions, backed by an existing column-major array. */
-  def fromDenseArray[T : ClassTag](array : Array[T])(implicit M : ValueOf[M], N : ValueOf[N]) : DenseMatrix[T,M,N] =
-    new DenseMatrix[T,M,N] {
+  def fromDenseArray[T : ClassTag](array : Array[T])(implicit M : ValueOf[M], N : ValueOf[N]) : DenseMatrix[M, N, T] =
+    new DenseMatrix[M, N, T] {
       val values : Array[T] = {
         assert(array.length == size, s"Array size (${array.length}) must match declared matrix size ($size).")
         array
@@ -23,7 +23,7 @@ final class PartiallyAppliedMatrix[M <: Int , N <: Int] extends AnyRef {
     }
 
   /** @constructor Canonical constructor. */
-  def apply[T : ClassTag](xs : T*)(implicit M : ValueOf[M], N : ValueOf[N]): DenseMatrix[T,M,N] =
+  def apply[T : ClassTag](xs : T*)(implicit M : ValueOf[M], N : ValueOf[N]): DenseMatrix[M, N, T] =
       fromDenseArray[T](xs.toArray)
 
 }

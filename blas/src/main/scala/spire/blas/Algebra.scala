@@ -7,8 +7,8 @@ trait Algebra {
   import spire.std.double._
   /** Vector space instance for BLAS dense matrices */
   implicit def denseMatrixOfDoubleVectorSpace[M <: Int : ValueOf, N <: Int : ValueOf](implicit blas : BLAS) :
-    VectorSpace[DenseMatrix[Double,M,N],Double] = 
-    new VectorSpaceDenseMatrixInstance[Double,M,N] { self =>
+    VectorSpace[DenseMatrix[M,N,Double],Double] = 
+    new VectorSpaceDenseMatrixInstance[M,N,Double] { self =>
     import blas._
   
     lazy val scal = dscal

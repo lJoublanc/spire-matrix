@@ -7,7 +7,7 @@ package spire.math.matrix
   * @tparam M Number of rows (may be abstract).
   * @tparam N Number of columns (may be abstract).
   */
-trait Matrix[T, M, N] {
+trait Matrix[M, N, T] {
   /** Number of rows in the matrix */
   def rows : M
 
@@ -18,14 +18,14 @@ trait Matrix[T, M, N] {
 /** companion objects should use a factory (implicit) type-class to extend this with constructor methods */
 object Matrix {
   /** A `ColumnVector` is just a type alias for a `M` × `1` matrix. */
-  type ColumnVector[T, M <: Int] = FiniteMatrix[T, M, 1]
+  type ColumnVector[M <: Int, T] = FiniteMatrix[M, 1, T]
 
   /** A `Square` is just a type alias for an `M` × `M` matrix. */
-  type Square[T, M <: Int] = FiniteMatrix[T, M, M]
+  type Square[M <: Int, T] = FiniteMatrix[M, M, T]
 }
 
 /** A matrix with known dimensions, supporting safe indexing */
-trait FiniteMatrix[T, M <: Int, N <: Int] extends Matrix[T, M, N] with ((Int,Int) => T) {
+trait FiniteMatrix[M <: Int, N <: Int, T] extends Matrix[M, N, T] with ((Int,Int) => T) {
   def rows : M
 
   def cols : N

@@ -25,8 +25,8 @@ protected[blas] object blasOps {
     * @see BLAST § 2.5.3 Array Arguments
     */
   @implicitNotFound("Most common cause is dimension mismatch or missing implicit BLAS library instance.")
-  protected[blas] trait L1GeneralDenseOps[T, M <: Int, N <: Int] {
-    type Matrix = DenseMatrix[T, M, N]
+  protected[blas] trait L1GeneralDenseOps[M <: Int, N <: Int, T] {
+    type Matrix = DenseMatrix[M, N, T]
     implicit val ct : ClassTag[T]
     implicit val m : ValueOf[M]
     implicit val n : ValueOf[N]
@@ -46,7 +46,7 @@ protected[blas] object blasOps {
       * All matrices are treated as 1-D, regardless of dim, as L1 subroutines take vectors as arguments. //TODO: investigate whether this affects performance?
       * @see <href a=https://stackoverflow.com/questions/15498187/incx-in-blas-routines>stackoverflow question</href>
       */
-    sealed trait L1Matrix extends DenseMatrix[T,M,N] { self : L1Matrix =>
+    sealed trait L1Matrix extends DenseMatrix[M, N, T] { self : L1Matrix =>
       lazy val values : Array[T] = self match {
         case SCAL(α,x) => withCopyOf(x)(scal(x.size, α, _, 1))
         case AXPY(α,x,y) => withCopyOf(y)(axpy(y.size, α, x.values, 1, _, 1))
@@ -73,7 +73,7 @@ protected[blas] object blasOps {
   }
 
   /** Level 2 BLAS routines. */
-  protected[blas] trait L2GeneralDenseOps[T, M <: Int, N <: Int] extends L1GeneralDenseOps[T, M, N] {
+  protected[blas] trait L2GeneralDenseOps[M <: Int, N <: Int, T] extends L1GeneralDenseOps[M, N, T] {
     import TransX._
 
     /* § 2.8.7 : Matrix Operations */

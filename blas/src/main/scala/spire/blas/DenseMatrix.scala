@@ -5,7 +5,7 @@ import spire.math.matrix.FiniteMatrix
 import scala.reflect.ClassTag
 
 /** A dense matrix, backed by a column-major array with BLAS layout to support fast vectorised calculation.  */
-abstract class DenseMatrix[T : ClassTag, M <: Int : ValueOf, N <: Int : ValueOf] extends FiniteMatrix[T,M,N] {
+abstract class DenseMatrix[M <: Int : ValueOf, N <: Int : ValueOf, T : ClassTag] extends FiniteMatrix[M, N, T] {
   def rows : M = valueOf[M]
 
   def cols : N = valueOf[N]
