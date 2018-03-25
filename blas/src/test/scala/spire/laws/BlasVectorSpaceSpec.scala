@@ -28,7 +28,7 @@ class BlasVectorSpaceSpec extends FunSuite with Discipline {
     implicit val builder = implicitly[Buildable[T,Array[T]]]
     Arbitrary {
       Gen.containerOfN[Array,T](valueOf[M]*valueOf[N], arbitrary[T]) map { as =>
-        Matrix.fromDenseArray[T,M,N](as)
+        Matrix[M,N].fromDenseArray(as)
       }
     }
   }
