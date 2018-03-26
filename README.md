@@ -2,6 +2,8 @@
 
 An add-on to [spire](https://github.com/non/spire) for Matrices, with a default BLAS-backed implemenation.
 
+**This repo is a prototype / in pre-alpha stage - at this point, expect regular API-breaking changes**
+
 ## Features
 
 ### Algebra
@@ -15,12 +17,13 @@ An add-on to Spire that provides various Matrix data types (up to two dimensions
 
 These have accompanying type-classes, such as MatrixMultiplication.
 
-Data Type | Metric Space | 
-==========================
-FiniteMatrix ✓
-SquareMatrix
-UpperTriangualMatrix
-BandedMatrix
+| Data Type             | Metric Space | 
+| --------------------- | ------------ |
+| FiniteMatrix          |      ✓       |
+| SquareMatrix          |              |
+| UpperTriangualMatrix  |              |
+| BandedMatrix          |              |
+
 
 ### Design Goals
 
@@ -52,7 +55,7 @@ val C = A * B //doesn't compile
 * native BLAS/LAPACK (optional) libraries for performance.
 
 ### Modules
-`spire-matrix-all` pulls in all the dependencies. Include it in your SBT project like so:
+`spire-matrix-all` pulls in all the dependencies. Include it in your SBT project like so: (**TODO : currently there is no artifact - you must build from source**)
 
     libraryDependencies ++= ( "org.typelevel" %% "spire-matrix-all" % 0.1 )
     
