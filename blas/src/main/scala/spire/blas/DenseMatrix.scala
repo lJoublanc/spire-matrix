@@ -6,11 +6,7 @@ import spire.math.matrix.{Vector,Matrix}
 import scala.reflect.ClassTag
 
 /** A dense matrix, backed by a column-major array with BLAS layout to support fast vectorised calculation.  */
-abstract class DenseMatrix[M <: Int : ValueOf, N <: Int : ValueOf, T : ClassTag] extends DenseVector[M,Vector[N,T]] with FiniteMatrix[M, N, T] {
-  def rows : M = valueOf[M]
-
-  def cols : N = valueOf[N]
-
+abstract class DenseMatrix[M <: Int, N <: Int, T : ClassTag] extends DenseVector[M,Vector[N,T]] with FiniteMatrix[M, N, T] {
   final override def stride  = rows
 
   protected[blas] def avalues = ( for (j <- 0 until cols) yield apply(j) ).toArray
@@ -23,6 +19,7 @@ abstract class DenseMatrix[M <: Int : ValueOf, N <: Int : ValueOf, T : ClassTag]
     * @return To avoid copies, a vector backed by a <em>mutable</em> array using [[java.nio.ByteBuffer#wrap]]. Make sure your code is pure or weird thinks will happen ...*/
   override def apply(col : Int) = new DenseVector[N,T] {
     import java.nio._
+    def size = rows
 
     def avalues = {
       (values : Array[_]) match { case a : Array[Double] => //TODO : implement using `cats.Const` and structural reflection implicit of a `Buffer[T] {def get ; def put }` typeclass.
@@ -46,8 +43,14 @@ abstract class DenseMatrix[M <: Int : ValueOf, N <: Int : ValueOf, T : ClassTag]
 trait DenseMatrixConstructors {
   implicit class MatrixConstructorOps(companion : Matrix.type) extends AnyRef {
     def apply[M <: Int, N <: Int] = new PartiallyAppliedMatrix[M,N]
+    /** Use this only when the matrix dimensions are unknown at compile-time.
+      * @see Prefer `Matrix[M,N].fromDenseArray(array : Array[T])` for a safe version of this constructor. */
+    def fromDenseArrayUnsafe[T : ClassTag](array : Array[T], columns : Int) = new DenseMatrix[Int,Int,T] {
+      def rows : Int = array.length / columns
+      def cols : Int = columns
+      val values = array
+    }
   }
-
   
   /** Helper to allow nice syntax `Matrix[3,3]` allowing compiler to infer data-type `T`. */
   final protected class PartiallyAppliedMatrix[M <: Int , N <: Int] extends AnyRef {
@@ -55,6 +58,10 @@ trait DenseMatrixConstructors {
     /** Creates a matrix of known dimensions, backed by an existing column-major array. */
     def fromDenseArray[T : ClassTag](array : Array[T])(implicit M : ValueOf[M], N : ValueOf[N]) : DenseMatrix[M, N, T] =
       new DenseMatrix[M, N, T] {
+        def rows : M = valueOf[M]
+
+        def cols : N = valueOf[N]
+
         val values : Array[T] = {
           assert(array.length == size, s"Array size (${array.length}) must match declared matrix size ($size).")
           array

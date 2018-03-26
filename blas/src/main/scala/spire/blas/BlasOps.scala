@@ -28,8 +28,8 @@ protected[blas] object blasOps {
   protected[blas] trait L1GeneralDenseOps[M <: Int, N <: Int, T] {
     type Matrix = DenseMatrix[M, N, T]
     implicit val ct : ClassTag[T]
-    implicit val m : ValueOf[M]
-    implicit val n : ValueOf[N]
+    implicit val M : ValueOf[M]
+    implicit val N : ValueOf[N]
 
     /** The external BLAS library implementation */
     def blas : BLAS
@@ -47,6 +47,8 @@ protected[blas] object blasOps {
       * @see <href a=https://stackoverflow.com/questions/15498187/incx-in-blas-routines>stackoverflow question</href>
       */
     sealed trait L1Matrix extends DenseMatrix[M, N, T] { self : L1Matrix =>
+      def rows : M = valueOf[M]
+      def cols : N = valueOf[N]
       lazy val values : Array[T] = self match {
         case SCAL(α,x) => withCopyOf(x)(scal(x.size, α, _, 1))
         case AXPY(α,x,y) => withCopyOf(y)(axpy(y.size, α, x.values, 1, _, 1))

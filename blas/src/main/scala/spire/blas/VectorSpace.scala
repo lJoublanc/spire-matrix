@@ -15,7 +15,7 @@ import scala.reflect.ClassTag
   *           This is a limitation of the library; but remember you can always implicitly upcast an e.g. `Int` to a `Double`.
   */
 abstract class VectorSpaceDenseMatrixInstance[M <: Int, N <: Int, T : Field]
-    (implicit val blas : BLAS,  val m : ValueOf[M], val n : ValueOf[N], val ct : ClassTag[T])
+    (implicit val blas : BLAS,  val M : ValueOf[M], val N : ValueOf[N], val ct : ClassTag[T])
     extends L1GeneralDenseOps[M, N, T] with VectorSpace[DenseMatrix[M, N, T],T]  {
 
   /** Returns a matrix with all elements negated. */
@@ -25,6 +25,8 @@ abstract class VectorSpaceDenseMatrixInstance[M <: Int, N <: Int, T : Field]
     * This implementation is optimized to allow fast return form certain BLAS routines, by setting stride = 0
     */
   val zero: Matrix = new DenseMatrix[M, N, T] {
+    def rows : M = valueOf[M]
+    def cols : N = valueOf[N]
     def values = Array.fill(size)(scalar.zero)
     override def apply(i : Int, j : Int) = scalar.zero
   }

@@ -40,7 +40,7 @@ trait FiniteMatrix[M <: Int, N <: Int, +T] extends FiniteVector[M, FiniteVector[
 
   /** Refer to [[math.show]] for a more flexible display type-classes */
   override def toString : String =
-    if (size > 40) s"<$rows × $cols matrix>" 
+    if (size > 40) s"<matrix ($rows x $cols)>" 
     else "[" + Seq.tabulate(rows,cols)(apply).mkString(" , ") + " ] " //TODO : use `transpose.tabulate(cols)(apply)` once .T implemented.
 }
 
