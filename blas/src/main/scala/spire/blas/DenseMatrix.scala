@@ -31,7 +31,7 @@ abstract class DenseMatrix[M <: Int, N <: Int, T : ClassTag] extends DenseVector
   }
 
   /** The element at position `(i,j)`, whose array index is calculated at `i + j × stride`. */
-  def apply(row : Int, col : Int) : T = values(row + col * rows)
+  override def apply(row : Int, col : Int) : T = values(row + col * rows)
 
   /*
   def toVector : Vector[M,Vector[N,T]] = new DenseVector[M,Vector[N,T]] {

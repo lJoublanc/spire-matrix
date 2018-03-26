@@ -36,7 +36,7 @@ trait FiniteMatrix[M <: Int, N <: Int, +T] extends FiniteVector[M, FiniteVector[
   override def size : Int /* M x N */ = rows * cols
 
   /** The element at position `i`,`j`. */
-  def apply(row : Int, col : Int) : T
+  def apply(row : Int, col : Int) : T = apply(row)(col)
 
   /** Refer to [[math.show]] for a more flexible display type-classes */
   override def toString : String =
