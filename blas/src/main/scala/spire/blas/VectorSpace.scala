@@ -17,7 +17,6 @@ import scala.reflect.ClassTag
 abstract class VectorSpaceDenseMatrixInstance[M <: Int, N <: Int, T : Field]
     (implicit val blas : BLAS,  val m : ValueOf[M], val n : ValueOf[N], val ct : ClassTag[T])
     extends L1GeneralDenseOps[M, N, T] with VectorSpace[DenseMatrix[M, N, T],T]  {
-  lazy val size = valueOf[M]*valueOf[N]
 
   /** Returns a matrix with all elements negated. */
   def negate(x: Matrix): Matrix = SCAL(scalar.negate(scalar.one), x)
