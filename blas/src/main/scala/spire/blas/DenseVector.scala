@@ -40,7 +40,7 @@ trait DenseVectorConstructors {
           assert(array.length == size, s"Array size (${array.length}) must match declared vector size ($size).")
           array
         }
-        val stride = strides
+        def stride = strides
       }
 
     def apply[T : ClassTag](xs : T*)(implicit M : ValueOf[M]) : DenseVector[M,T] = fromDenseArray[T](xs.toArray)
