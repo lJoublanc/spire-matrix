@@ -27,7 +27,7 @@ trait DenseVectorConstructors {
     def fromDenseArrayUnsafe[T : ClassTag](array : Array[T], strides : Int = 1) : DenseVector[Int,T] = new DenseVector[Int,T] {
       def size = array.length / stride
       val avalues = array
-      val stride = strides
+      def stride = strides
     }
   }
 
