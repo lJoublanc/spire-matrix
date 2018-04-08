@@ -6,7 +6,7 @@ import spire.math.matrix.{Vector,Matrix}
 import scala.reflect.ClassTag
 
 /** A dense matrix, backed by a column-major array with BLAS layout to support fast vectorised calculation.  */
-abstract class DenseMatrix[M <: Int, N <: Int, T : ClassTag] extends DenseVector[M,Vector[N,T]] with FiniteMatrix[M, N, T] {
+abstract class DenseMatrix[M <: Int, N <: Int, T : ClassTag] extends DenseVector[M,Vector[N,T]] with FiniteMatrix[M, N, T] { mat =>
   final override def stride  = rows
 
   protected[blas] def avalues = ( for (j <- 0 until cols) yield apply(j) ).toArray
@@ -33,10 +33,13 @@ abstract class DenseMatrix[M <: Int, N <: Int, T : ClassTag] extends DenseVector
   /** The element at position `(i,j)`, whose array index is calculated at `i + j × stride`. */
   override def apply(row : Int, col : Int) : T = values(row + col * rows)
 
-  /*
-  def toVector : Vector[M,Vector[N,T]] = new DenseVector[M,Vector[N,T]] {
-    ???
-  }*/
+  /** Concatenates the columns to return a 1-D vector. 
+    * @return A 1-D `Vector` <b> of un-typed </b> size. */
+  def flatten : Vector[Int,T] = new DenseVector[Int,T] {
+    protected[blas] def avalues = values
+    protected[blas] def stride = 1
+    def size = mat.size
+  }
 }
 
 /** Extension methods for [[spire.math.matrix.Matrix]] companion, available by `import implicits._` */
