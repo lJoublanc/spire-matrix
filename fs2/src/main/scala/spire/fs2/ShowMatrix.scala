@@ -1,6 +1,6 @@
 package spire.fs2
 
-import spire.math.matrix.FiniteMatrix
+import spire.math.matrix.Matrix
 
 import java.nio.charset.Charset
 import java.nio.charset.StandardCharsets.{UTF_16,UTF_8}
@@ -20,7 +20,7 @@ trait showMatrix {
   implicit val realShow : Show[Float] = from[Float]( d => f"$d%.2f")
 
   /** Display on a console. Supports matrices of dimensions up to 80x80 and supports unicode */
-  implicit def consoleShowFiniteMatrix[M <: Int : ValueOf, N <: Int : ValueOf, T : Show, Mat[m <: Int, n <:Int, t] <: FiniteMatrix[m, n, t]]
+  implicit def consoleShowMatrix[M <: Int : ValueOf, N <: Int : ValueOf, T : Show, Mat[m <: Int, n <:Int, t] <: Matrix[m, n, t]]
       (implicit charset : Charset = Charset.defaultCharset()) : Show[Mat[M,N,T]] =
   new Show[Mat[M, N, T]] {
     type Matrix = Mat[M, N, T]
