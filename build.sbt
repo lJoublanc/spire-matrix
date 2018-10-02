@@ -10,8 +10,17 @@ lazy val commonSettings = inThisBuild(Seq(
   scalacOptions ++= Seq(
     "-Yliteral-types",
     "-Ypartial-unification",
-    "-language:higherKinds"
-  ))
+    "-language:higherKinds",
+    "-feature",
+    "-Ywarn-unused:imports",
+    "-Xlint"
+  ),
+  initialCommands in consoleQuick := """
+    import spire.std.double._
+    import spire.algebra.VectorSpace
+    import spire.syntax.vectorSpace._
+  """
+  )
 )
 
 lazy val core = (project in file("core")).
@@ -21,12 +30,7 @@ lazy val core = (project in file("core")).
     libraryDependencies ++= Seq(
       "org.typelevel" %% "spire-laws" % spireVersion % "test",
       "org.scalatest" %% "scalatest" % scalaTestVersion % "test"
-    ),
-    initialCommands := """
-      import spire.std.double._
-      import spire.algebra.VectorSpace
-      import spire.syntax.vectorSpace._
-    """
+    )
   )
 
 lazy val blas = (project in file("blas")).
@@ -34,20 +38,20 @@ lazy val blas = (project in file("blas")).
   settings(
     name := "Matrices for Spire (BLAS implementation)",
     libraryDependencies ++= Seq(
+      "net.java.dev.jna" % "jna" % "4.5.2",
       "org.typelevel" %% "spire-laws" % spireVersion % "test",
       "org.scalatest" %% "scalatest" % scalaTestVersion % "test",
-      "net.sourceforge.f2j" % "arpack_combined_all" % "0.1",
-      "com.github.fommil.netlib" % "all" % "1.1.2" // "core" will not pull any blas implemenations.
     ),
-    initialCommands += """
+    scalacOptions in (Compile, console) ~= {
+      _.filterNot("-Ywarn-unused:imports" == _)
+       .filterNot("-Xlint" == _)
+    },
+    initialCommands in console += """
       import spire.std.double._
       import spire.algebra.VectorSpace
       import spire.syntax.vectorSpace._
       import spire.math.matrix._
       import spire.blas.implicits._
-      import com.github.fommil.netlib._
-
-      implicit val blasInstance : BLAS = new F2jBLAS()
     """
   ).dependsOn(core)
 
