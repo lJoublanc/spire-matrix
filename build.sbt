@@ -38,6 +38,7 @@ lazy val blas = (project in file("blas")).
   settings(
     name := "Matrices for Spire (BLAS implementation)",
     libraryDependencies ++= Seq(
+      compilerPlugin("org.spire-math" %% "kind-projector" % "0.9.6"),
       "net.java.dev.jna" % "jna" % "4.5.2",
       "org.typelevel" %% "spire-laws" % spireVersion % "test",
       "org.scalatest" %% "scalatest" % scalaTestVersion % "test",

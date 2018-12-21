@@ -1,11 +1,13 @@
 package spire.blas;
 
-import java.nio.Buffer;
+import java.nio.*;
 import com.sun.jna.Native;
 
 public class BlasLib {
+
   static {
-    Native.register("blas");
+    //Native.setProtected(false);
+    Native.register("cblas");
   }
 
   /*
@@ -46,7 +48,7 @@ public class BlasLib {
   public static native void ctrsv_();
   public static native void dasum_();
   */
-  public static native void daxpy_(int n, double da, Buffer dx, int incx, Buffer dy, int incy);
+  public static native void cblas_daxpy(int n, double da, DoubleBuffer dx, int incx, DoubleBuffer dy, int incy);
   /*
   public static native void dcabs1_();
   public static native void dcopy_();
@@ -62,7 +64,7 @@ public class BlasLib {
   public static native void drotmg_();
   public static native void dsbmv_();
   */
-  public static native void dscal_(int n, double da, Buffer dx, int incx);
+  public static native void cblas_dscal(int n, double da, DoubleBuffer dx, int incx);
   /*
   public static native void dsdot_();
   public static native void dspmv_();
