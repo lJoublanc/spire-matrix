@@ -6,8 +6,8 @@ import spire.algebra.{VectorSpace,Field}
 import java.nio
 
 package object implicits {
-  import spire.blas.Vector
 
+  /*
   implicit def doubleVector[M <: Int : ValueOf](implicit B: Blas.Aux[Double,nio.DoubleBuffer]): 
     DenseVector.Aux[M,Double,nio.DoubleBuffer] =
   new DenseVector[M,Double] {
@@ -104,4 +104,5 @@ package object implicits {
 
     def scalar = field
   }
+  */
 }
