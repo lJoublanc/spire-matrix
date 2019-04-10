@@ -51,7 +51,9 @@ public class BlasLib {
   public static native void cblas_daxpy(int n, double da, DoubleBuffer dx, int incx, DoubleBuffer dy, int incy);
   /*
   public static native void dcabs1_();
-  public static native void dcopy_();
+  */
+  public static native void cblas_dcopy(int n, DoubleBuffer dx, int incx, DoubleBuffer dy, int incy);
+  /*
   public static native void ddot_();
   public static native void dgbmv_();
   public static native void dgemm_();

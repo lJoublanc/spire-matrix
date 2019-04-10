@@ -1,58 +1,46 @@
-// For parity with non/spire
-lazy val spireVersion = "0.14.1"
-lazy val scalaTestVersion = "3.0.6-SNAP5"
+name := "spire-matrix"
 
-lazy val commonSettings = inThisBuild(Seq(
-  scalaOrganization := "org.typelevel", // provide literal types
-  scalaVersion := "2.12.4-bin-typelevel-4",
-  version      := "0.1.0-SNAPSHOT",
-  libraryDependencies += "org.typelevel" %% "spire" % spireVersion,
-  scalacOptions ++= Seq(
-    "-Yliteral-types",
-    "-Ypartial-unification",
-    "-language:higherKinds",
-    "-feature",
-    "-Ywarn-unused:imports",
-    "-Xlint"
-  ),
-  initialCommands in consoleQuick := """
+scalaVersion := "2.13.0-M5"
+
+lazy val spireVersion = "0.16.1"
+
+description := "Matrices for Spire (BLAS implementation)"
+
+libraryDependencies ++= Seq(
+  "org.typelevel" %% "spire" % spireVersion,
+  "net.java.dev.jna" % "jna" % "4.5.2",
+  "com.github.mpilquist" %% "simulacrum" % "0.14.0",
+  "org.typelevel" %% "spire-laws" % spireVersion % "test",
+  "org.scalatest" %% "scalatest" % "3.0.6" % "test") //3.0.7 incompat with discipline/laws
+
+enablePlugins(GitVersioning)
+
+scalacOptions ++= Seq(
+  "-language:higherKinds",
+  "-language:reflectiveCalls",
+  "-language:implicitConversions",
+  "-feature",
+  "-Ywarn-unused:imports",
+  "-Xlint",
+  "-Ymacro-annotations"
+)
+
+addCompilerPlugin("org.spire-math" %% "kind-projector" % "0.9.9")
+
+scalacOptions in (Compile, console) ~= {
+  _.filterNot("-Ywarn-unused:imports" == _)
+   .filterNot("-Xlint" == _)
+}
+
+initialCommands in console += """
     import spire.std.double._
     import spire.algebra.VectorSpace
     import spire.syntax.vectorSpace._
-  """,
-  addCompilerPlugin("org.spire-math" %% "kind-projector" % "0.9.9")
-  )
-)
+    import spire.blas._
+  """
 
-lazy val core = (project in file("core")).
-  settings(commonSettings: _*).
-  settings(
-    name := "Matrices for Spire (core)",
-    libraryDependencies ++= Seq(
-      "org.typelevel" %% "cats-core" % "1.5.0",
-      "org.typelevel" %% "spire-laws" % spireVersion % "test",
-      "org.scalatest" %% "scalatest" % scalaTestVersion % "test"
-    )
-  )
-
-lazy val blas = (project in file("blas")).
-  settings(commonSettings : _*).
-  settings(
-    name := "Matrices for Spire (BLAS implementation)",
-    libraryDependencies ++= Seq(
-      "net.java.dev.jna" % "jna" % "4.5.2",
-      "org.typelevel" %% "spire-laws" % spireVersion % "test",
-      "org.scalatest" %% "scalatest" % scalaTestVersion % "test",
-    ),
-    scalacOptions in (Compile, console) ~= {
-      _.filterNot("-Ywarn-unused:imports" == _)
-       .filterNot("-Xlint" == _)
-    },
-    initialCommands in console += """
-      import spire.std.double._
-      import spire.algebra.VectorSpace
-      import spire.syntax.vectorSpace._
-      import spire.math.matrix._
-      import spire.blas.implicits._
-    """
-  ).dependsOn(core)
+initialCommands in consoleQuick := """
+  import spire.std.double._
+  import spire.algebra.VectorSpace
+  import spire.syntax.vectorSpace._
+"""
