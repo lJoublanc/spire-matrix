@@ -1,4 +1,9 @@
-# Spire Matrix
+# This project has moved to [gitlab](https://gitlab.com/lJoublanc/spire-matrix), and will soon be removed from here.
+
+
+
+
+## Spire Matrix
 
 An add-on to [spire](https://github.com/non/spire) for Matrices, with a default BLAS-backed implemenation.
 
